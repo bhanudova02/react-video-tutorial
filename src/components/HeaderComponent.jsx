@@ -1,6 +1,13 @@
-import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 export function HeaderComponent() {
+    const [cookies, setCookie, removeCookie] = useCookies();
+    const navigate = useNavigate();
+    function handelLogout() {
+        removeCookie('userId');
+        navigate('/login')
+    }
     return (
         <header className="shadow d-flex align-items-center justify-content-between p-3">
             <div className="d-flex align-items-center gap-1">
@@ -21,9 +28,15 @@ export function HeaderComponent() {
                         </Link>
                     </li>
                     <li className="d-flex align-items-center gap-1 fw-bold text-success">
-                        <Link to="/login" className="text-decoration-none  text-success">
-                            <span className="bi bi-box-arrow-in-right"></span> Login
-                        </Link>
+                        {cookies.userId ? (
+                            <button onClick={handelLogout} className="d-flex align-items-center gap-1 fw-bold btn btn-success" style={{ cursor: 'pointer' }}>
+                                 Logout <img src="/user_icon.png" width={20} height={20} alt="user_icon" className=""/>
+                            </button>
+                        ) : (
+                            <Link to="/login" className="text-decoration-none  text-success">
+                                <span className="bi bi-box-arrow-in-right"></span> Login
+                            </Link>
+                        )}
                     </li>
                 </ul>
             </div>
