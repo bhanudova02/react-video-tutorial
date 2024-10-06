@@ -17,10 +17,10 @@ export function VideoComponent() {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        if (!cookies.userId) {
+        if (!cookies.UserId) {
             setShowModal(true);
         }
-    }, [cookies.userId]);
+    }, [cookies.UserId]);
 
     const handleLogin = () => {
         navigate('/login');

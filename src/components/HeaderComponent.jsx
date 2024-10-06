@@ -5,7 +5,7 @@ export function HeaderComponent() {
     const [cookies, setCookie, removeCookie] = useCookies();
     const navigate = useNavigate();
     function handelLogout() {
-        removeCookie('userId');
+        removeCookie('UserId');
         navigate('/login')
     }
     return (
@@ -28,7 +28,7 @@ export function HeaderComponent() {
                         </Link>
                     </li>
                     <li className="d-flex align-items-center gap-1 fw-bold text-success">
-                        {cookies.userId ? (
+                        {cookies.UserId ? (
                             <button onClick={handelLogout} className="d-flex align-items-center gap-1 fw-bold btn btn-success" style={{ cursor: 'pointer' }}>
                                  Logout <img src="/user_icon.png" width={20} height={20} alt="user_icon" className=""/>
                             </button>

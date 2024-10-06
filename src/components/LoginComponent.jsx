@@ -10,8 +10,8 @@ export function LoginComponent() {
     const [userError, setUserError] = useState('');
     const [passError, setPassError] = useState('');
     const [user, setUser] = useState({
-        userId: '',
-        password: ''
+        UserId: '',
+        Password: ''
     });
 
     useEffect(() => {
@@ -28,14 +28,14 @@ export function LoginComponent() {
 
         for (const users of userDetails) {
             // Check if user ID or email matches
-            if (users.userId === user.userId || users.email === user.userId) {
+            if (users.UserId === user.UserId || users.email === user.UserId) {
                 userFound = true; // User exists
 
                 // Check if the password matches
-                if (users.password === user.password) {
+                if (users.Password === user.Password) {
                     setPassError("");
                     setUserError("");
-                    setCookie('userId', users.userId, { expires: new Date('2025-01-01 20:44:30') });
+                    setCookie('UserId', users.UserId, { expires: new Date('2025-01-01 20:44:30') });
                     navigate("/");
                 } else {
                     setPassError("Invalid Password");
@@ -62,8 +62,8 @@ export function LoginComponent() {
                     <dd>
                         <input
                             onChange={(e) => setUser({
-                                userId: e.target.value,
-                                password: user.password
+                                UserId: e.target.value,
+                                Password: user.Password
                             })}
                             type="text"
                             required
@@ -76,8 +76,8 @@ export function LoginComponent() {
                     <dd>
                         <input
                             onChange={(e) => setUser({
-                                userId: user.userId,
-                                password: e.target.value
+                                UserId: user.UserId,
+                                Password: e.target.value
                             })}
                             type="password"
                             className="form-control"
