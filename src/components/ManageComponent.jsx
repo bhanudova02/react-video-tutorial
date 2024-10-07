@@ -1,22 +1,21 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 
 export function ManageComponent() {
-    const reactVideos = [
-        { url: 'https://www.youtube.com/embed/MHn66JJH5zs?si=aCeZU6Ogj71xj0tF', title: 'React Video 1' },
-        { url: 'https://www.youtube.com/embed/R1B1PaD0sWU?si=tWsXOnq6GRXunutH', title: 'React Video 2' },
-        { url: 'https://www.youtube.com/embed/jufPO-r6bt0?si=jb1rgtKYVEmfDna-', title: 'React Video 3' },
-        { url: 'https://www.youtube.com/embed/mNdLo_UfwBE?si=Dvp3B8rzrxEul-Ff', title: 'React Video 4' },
-        { url: 'https://www.youtube.com/embed/d5ooYpXioqE?si=9K222IoGBVCyhhYL', title: 'React Video 5' },
-        { url: 'https://www.youtube.com/embed/Ncl6AIC844c?si=dvJad8mh2LrY2uNS', title: 'React Video 6' },
-    ];
-
+    const [reactVideos, setReactVideos] = useState([{}])
     const [cookies] = useCookies();
     const navigate = useNavigate();
     const [showModal, setModal] = useState(false);
 
     useEffect(() => {
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/videos'
+        }).then(res => {
+            setReactVideos(res.data)
+        })
         if (!cookies.UserId) {
             setModal(true)
         }
@@ -46,8 +45,8 @@ export function ManageComponent() {
                         </tr>
                     </thead>
                     <tbody>
-                        {reactVideos.map(video =>
-                            <tr key={video.title}>
+                        {reactVideos.map((video, index) =>
+                            <tr key={index}>
                                 <td>{video.title}</td>
                                 <td>
                                     <iframe src={video.url} width={100} height={100} ></iframe>

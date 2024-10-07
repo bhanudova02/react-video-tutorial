@@ -27,17 +27,43 @@ app.get("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
     const registerUserDetails = {
-        UserId:req.body.UserId,
-        UserEmail:req.body.UserEmail,
-        Password:req.body.Password
+        UserId: req.body.UserId,
+        UserEmail: req.body.UserEmail,
+        Password: req.body.Password
     }
     mongoClient.connect(conStr)
-    .then(obj=>{
-        var database = obj.db("react-js-tutorial-dashboard");
-        database.collection("register_collection").insertOne(registerUserDetails)
-        .then(()=>{
-            console.log("Record Inserted");
-            res.redirect("/login");
+        .then(obj => {
+            var database = obj.db("react-js-tutorial-dashboard");
+            database.collection("register_collection").insertOne(registerUserDetails)
+                .then(() => {
+                    console.log("Record Inserted");
+                    res.redirect("/login");
+                })
+        })
+});
+
+app.get("/videos", (req, res) => {
+    mongoClient.connect(conStr).then((clientObj) => {
+        var database = clientObj.db("react-js-tutorial-dashboard");
+        database.collection("video_library").find({}).toArray().then((documents) => {
+            res.send(documents)
+        })
+    })
+});
+
+app.post("/add_video", (req, res) => {
+    var video = {
+        "title": req.body.title,
+        "url": req.body.url,
+        "views": parseInt(req.body.views),
+        "likes": parseInt(req.body.likes),
+        "subscribed": (req.body.subscribed == "true") ? true : false
+    }
+    mongoClient.connect(conStr).then(clientObj => {
+        var database = clientObj.db("react-js-tutorial-dashboard");
+        database.collection("video_library").insertOne(video).then((result) => {
+            console.log("Video Inserted");
+            res.redirect("/videos");
         })
     })
 })
