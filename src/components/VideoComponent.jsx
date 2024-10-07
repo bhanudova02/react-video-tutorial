@@ -43,17 +43,15 @@ export function VideoComponent() {
 
             {/* Modal for Login Alert */}
             {showModal && (
-                <div className="modal show" style={{ display: 'block', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, overflow: 'hidden', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                    <div className="modal-dialog" style={{ margin: 'auto', top: '20%' }}>
+                <div className="modal show d-block position-fixed" style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, overflow: 'hidden', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
+                    <div className="modal-dialog" style={{ margin: 'auto', top: '30%' }}>
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Login Required</h5>
-                                <button type="button" className="close" onClick={handleCancel}>
-                                    <span>&times;</span>
-                                </button>
+                                <h5 className="modal-title d-flex align-items-center">Login Required <i class="bi bi-box-arrow-in-right"style={{marginTop:'3px'}}></i></h5>
+                                <button type="button" className="btn-close" onClick={handleCancel}/>
                             </div>
                             <div className="modal-body text-center">
-                                <p>Please login first to watch the videos.</p>
+                                <p className='my-auto'>Please login first to watch the videos.</p>
                             </div>
                             <div className="modal-footer justify-content-center">
                                 <button type="button" className="btn btn-primary" onClick={handleLogin}>Login</button>

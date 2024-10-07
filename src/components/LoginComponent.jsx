@@ -24,14 +24,8 @@ export function LoginComponent() {
     }, []);
 
     function handelLogin() {
-        let userFound = false;
-
         for (const users of userDetails) {
-            // Check if user ID or email matches
             if (users.UserId === user.UserId || users.email === user.UserId) {
-                userFound = true; // User exists
-
-                // Check if the password matches
                 if (users.Password === user.Password) {
                     setPassError("");
                     setUserError("");
@@ -41,14 +35,11 @@ export function LoginComponent() {
                     setPassError("Invalid Password");
                     setUserError("");
                 }
-                break; // No need to continue checking if we found a user
+                break;
+            }else{
+                setUserError("Invalid UserId/Email");
+                setPassError("");
             }
-        }
-
-        // If no user was found
-        if (!userFound) {
-            setUserError("Invalid UserId/Email");
-            setPassError("");
         }
     }
 
