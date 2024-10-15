@@ -8,6 +8,8 @@ import { PageNotFound } from './components/PageNotFound';
 import { ManageComponent } from './components/ManageComponent';
 import { LoginComponent } from './components/LoginComponent';
 import { RegisterComponent } from './components/RegisterComponent';
+import { VideoDetails } from './components/VideoDetails';
+import { VideoAdd } from './components/VideoAdd';
 
 function App() {
   return (
@@ -15,10 +17,12 @@ function App() {
       <HeaderComponent />
       <Routes>
         <Route path="/" element={<HomeComponent />}/>
-        <Route path="/videos" element={<VideoComponent/>}/>
-        <Route path="/manage" element={<ManageComponent/>}/>
-        <Route path="/login" element={<LoginComponent/>}/>
-        <Route path="/register" element={<RegisterComponent/>}/>
+        <Route path="videos" element={<VideoComponent/>}/>
+        <Route path="manage" element={<ManageComponent/>}/>
+        <Route path="video/details/:id" element={<VideoDetails/>}/>
+        <Route path="add_video" element={<VideoAdd/>}/>
+        <Route path="login" element={<LoginComponent/>}/>
+        <Route path="register" element={<RegisterComponent/>}/>
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
       <FooterComponent />

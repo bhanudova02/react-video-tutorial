@@ -7,7 +7,9 @@ export function ManageComponent() {
     const [reactVideos, setReactVideos] = useState([{}])
     const [cookies] = useCookies();
     const navigate = useNavigate();
+    const [selectedVideo, setSelectedVideo] = useState(null); // State to store the selected video
     const [showModal, setModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false)
 
     useEffect(() => {
         axios({
@@ -29,12 +31,21 @@ export function ManageComponent() {
         navigate("/")
     }
 
+    const handleEditClick = (video) => {
+        setSelectedVideo(video); // Store the selected video
+        setShowEditModal(true); // Show the modal
+    }
+
+    const handelDeleteClick = (id) => {
+        alert(id)
+    }
+
     return (
         <div>
             <div className="p-5">
                 <div className="mb-4">
                     <h3>Manage Videos</h3>
-                    <button className="btn btn-primary">Add New Video <span className="bi bi-camera-video"></span></button>
+                    <Link to="/add_video" className="btn btn-primary">Add New Video <span className="bi bi-camera-video"></span></Link>
                 </div>
                 <table className="table border mx-auto text-center shadow shadow-sm">
                     <thead>
@@ -53,13 +64,13 @@ export function ManageComponent() {
                                 </td>
                                 <td className="w-50 ">
                                     <ul className="list-unstyled d-flex justify-content-center align-items-center gap-2">
-                                        <li>
-                                            <Link className="btn btn-success">Details <span className="bi bi-eye-fill"></span></Link>
+                                        <li >
+                                            <Link to={`/video/details/${video.id}`} className="btn btn-success">Details <span className="bi bi-eye-fill"></span></Link>
                                         </li>
-                                        <li>
+                                        <li onClick={() => { handleEditClick(video) }}> {/* Set selected video on click */}
                                             <Link className="btn btn-warning">Edit <span className="bi bi-pen"></span> </Link>
                                         </li>
-                                        <li>
+                                        <li onClick={() => { handelDeleteClick(video.id) }} >
                                             <Link className="btn btn-danger">Remove <span className="bi bi-trash-fill"></span></Link>
                                         </li>
                                     </ul>
@@ -69,6 +80,39 @@ export function ManageComponent() {
                     </tbody>
                 </table>
             </div>
+
+            {
+                showEditModal && selectedVideo && (
+                    <div className="modal show d-block position-fixed" style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, overflow: 'hidden', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
+                        <div className="modal-dialog" style={{ margin: 'auto', top: '10%' }}>
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title d-flex align-items-center fw-bold">Edit Course Video</h5>
+                                    <button type="button" className="btn-close" onClick={() => { setShowEditModal(false) }} />
+                                </div>
+                                <div className="modal-body p-4">
+                                    <dl>
+                                        <dt className="mb-1" style={{ fontSize: '12px' }}>Video Id</dt>
+                                        <dd>
+                                            <input type="number" placeholder="Enter Id" value={selectedVideo.id} className="form-control" />
+                                        </dd>
+                                        <dt className="mb-1 mt-4" style={{ fontSize: '12px' }}>Video Title</dt>
+                                        <dd>
+                                            <input type="text" placeholder="Enter Title" value={selectedVideo.title} className="form-control fw-semibold" />
+                                        </dd>
+                                        <dt className="mb-1 mt-4" style={{ fontSize: '12px' }}>URL</dt>
+                                        <dd>
+                                            <input type="text" placeholder="Paste URL" value={selectedVideo.url} className="form-control" />
+                                        </dd>
+                                    </dl>
+                                    <button className="btn btn-primary w-100">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
             {showModal && (
                 <div className="modal show d-block position-fixed" style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, overflow: 'hidden', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
                     <div className="modal-dialog" style={{ margin: 'auto', top: '30%' }}>
