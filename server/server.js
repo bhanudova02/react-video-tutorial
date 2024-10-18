@@ -58,7 +58,7 @@ app.post("/add_video", (req, res) => {
         "url": req.body.url,
         "views": parseInt(req.body.views),
         "likes": parseInt(req.body.likes),
-        "subscribed": req.body.subscribed === 'true' || req.body.subscribed === true // Ensure it's a boolean
+        "subscribed": req.body.subscribed
     }
 
     mongoClient.connect(conStr).then(clientObj => {
