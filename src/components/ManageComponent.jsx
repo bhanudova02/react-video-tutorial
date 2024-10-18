@@ -9,7 +9,10 @@ export function ManageComponent() {
     const navigate = useNavigate();
     const [selectedVideo, setSelectedVideo] = useState(null); // State to store the selected video
     const [showModal, setModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const [showDelModal, setShowDelModal] = useState(false)
+
 
     useEffect(() => {
         axios({
@@ -36,9 +39,25 @@ export function ManageComponent() {
         setShowEditModal(true); // Show the modal
     }
 
+    const [videoIdToDelete, setVideoIdToDelete] = useState(null); // State to store the id of the video to delete
+
     const handelDeleteClick = (id) => {
-        alert(id)
+        setVideoIdToDelete(id); // Store the id when delete is clicked
+        setShowDelModal(true);
     }
+
+    const handleConfirmDelete = () => {
+        if(videoIdToDelete){
+            axios({
+                method:'delete',
+                url:`http://127.0.0.1:5000/delete_video/${videoIdToDelete}`
+            })
+            setShowDelModal(false)
+            window.location.reload()
+        }
+    };
+    
+    
 
     return (
         <div>
@@ -80,6 +99,27 @@ export function ManageComponent() {
                     </tbody>
                 </table>
             </div>
+
+            {showDelModal && (
+                <div className="modal show d-block position-fixed" style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, overflow: 'hidden', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
+                    <div className="modal-dialog" style={{ margin: 'auto', top: '30%' }}>
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title d-flex align-items-center">Are Sure Want To Delete?</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowDelModal(false)} />
+                            </div>
+                            <div className="modal-body text-center d-flex justify-content-around">
+                                <button type="button" className="btn btn-primary" onClick={handleConfirmDelete}>
+                                    Yes
+                                </button>
+                                &nbsp;
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowDelModal(false)}>No</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {
                 showEditModal && selectedVideo && (

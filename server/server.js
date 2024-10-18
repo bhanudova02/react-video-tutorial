@@ -104,16 +104,16 @@ app.put("/updatevideo/:id", (req, res) => {
 });
 
 
-app.delete("/deletevideo/:id",(req,res)=>{
-    var video_id = parseInt(req.body.id);
+
+app.delete('/delete_video/:id',(req,res)=>{
+    var video_id = parseInt(req.params.id);
     mongoClient.connect(conStr).then(clientObj=>{
         var database = clientObj.db("react-js-tutorial-dashboard");
         database.collection("video_library").deleteOne({id:video_id}).then((result)=>{
             console.log("Video Deleted");
-            res.redirect("/videos")
         })
     })
-});
+})
 
 
 
