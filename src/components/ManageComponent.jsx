@@ -34,30 +34,55 @@ export function ManageComponent() {
         navigate("/")
     }
 
-    const handleEditClick = (video) => {
-        setSelectedVideo(video); // Store the selected video
-        setShowEditModal(true); // Show the modal
-    }
-
     const [videoIdToDelete, setVideoIdToDelete] = useState(null); // State to store the id of the video to delete
-
     const handelDeleteClick = (id) => {
         setVideoIdToDelete(id); // Store the id when delete is clicked
         setShowDelModal(true);
     }
 
     const handleConfirmDelete = () => {
-        if(videoIdToDelete){
+        if (videoIdToDelete) {
             axios({
-                method:'delete',
-                url:`http://127.0.0.1:5000/delete_video/${videoIdToDelete}`
+                method: 'delete',
+                url: `http://127.0.0.1:5000/delete_video/${videoIdToDelete}`
             })
             setShowDelModal(false)
             window.location.reload()
+
         }
     };
-    
-    
+
+
+    const handleEditClick = (video) => {
+        setSelectedVideo(video); // Store the selected video
+        setUpdateId(video.id);
+        setUpdateTitle(video.title);
+        setUpdateUrl(video.url);
+        setUpdateSubscribe(video.subscribed)
+        setShowEditModal(true); // Show the modal
+    }
+
+    const [updateId, setUpdateId] = useState()
+    const [updateTitle, setUpdateTitle] = useState();
+    const [updateUrl, setUpdateUrl] = useState();
+    const [updateSubscribe, setUpdateSubscribe] = useState();
+
+    function handelUpdateClick(id) {
+        if (id) {
+            axios({
+                method: 'put',
+                url: `http://127.0.0.1:5000/update_video/${updateId}`,
+                data: {
+                    title:updateTitle,
+                    url:updateUrl,
+                    subscribed:updateSubscribe
+                }
+            })
+            setShowEditModal(false)
+            window.location.reload();
+        }
+    }
+
 
     return (
         <div>
@@ -132,20 +157,20 @@ export function ManageComponent() {
                                 </div>
                                 <div className="modal-body p-4">
                                     <dl>
-                                        <dt className="mb-1" style={{ fontSize: '12px' }}>Video Id</dt>
+                                        <dt className="mb-1" style={{ fontSize: '12px' }}>Video Title</dt>
                                         <dd>
-                                            <input type="number" placeholder="Enter Id" value={selectedVideo.id} className="form-control" />
-                                        </dd>
-                                        <dt className="mb-1 mt-4" style={{ fontSize: '12px' }}>Video Title</dt>
-                                        <dd>
-                                            <input type="text" placeholder="Enter Title" value={selectedVideo.title} className="form-control fw-semibold" />
+                                            <input type="text" placeholder="Enter Title" className="form-control fw-semibold" onChange={(e) => setUpdateTitle(e.target.value)} value={updateTitle} />
                                         </dd>
                                         <dt className="mb-1 mt-4" style={{ fontSize: '12px' }}>URL</dt>
                                         <dd>
-                                            <input type="text" placeholder="Paste URL" value={selectedVideo.url} className="form-control" />
+                                            <input type="text" placeholder="Paste URL" className="form-control" onChange={(e) => setUpdateUrl(e.target.value)} value={updateUrl} />
+                                        </dd>
+                                        <dt className="mb-1 mt-4" style={{ fontSize: '12px' }}>Subscribed</dt>
+                                        <dd className="form-switch">
+                                            <input type="checkbox" className="form-check-input" onChange={(e) => setUpdateSubscribe(e.target.checked)} checked={updateSubscribe} />
                                         </dd>
                                     </dl>
-                                    <button className="btn btn-primary w-100">Update</button>
+                                    <button onClick={handelUpdateClick} className="btn btn-primary w-100">Update</button>
                                 </div>
                             </div>
                         </div>

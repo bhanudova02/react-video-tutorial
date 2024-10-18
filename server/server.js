@@ -85,14 +85,12 @@ app.get("/videos/:id", (req, res) => {
 
 
 
-app.put("/updatevideo/:id", (req, res) => {
+app.put("/update_video/:id", (req, res) => {
     var video_id = parseInt(req.params.id);
     var video = {
         "title": req.body.title,
         "url": req.body.url,
-        "views": parseInt(req.body.views),
-        "likes": parseInt(req.body.likes),
-        "subscribed": (req.body.subscribed == "true") ? true : false
+        "subscribed": req.body.subscribed
     }
     mongoClient.connect(conStr).then(clientObj => {
         var database = clientObj.db("react-js-tutorial-dashboard");
